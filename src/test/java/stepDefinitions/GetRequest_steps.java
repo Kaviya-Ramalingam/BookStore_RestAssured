@@ -19,41 +19,22 @@ public class GetRequest_steps extends specBuilder {
 
 	CommonUtils utils = new CommonUtils();
 
-	TestContext context;
-
-	public GetRequest_steps(TestContext context) {
-		this.context = context;
-	}
+	TestContext context = TestContext.getInstance();
 
 	@Given("User sets authorization to bearer token")
 	public void user_sets_authorization_to_bearer_token() throws IOException {
 
 		context.req1 = given().header("Authorization", "Bearer " + context.token).spec(requestSpecification());
 		System.out.println("****setting suthorisation: " + context.token);
+		System.out.println("Context object hashcode: " + context.hashCode());
 	}
 
 	@Given("user creats get request with path parameter userid")
 	public void user_creats_get_request_with_path_parameter_userid() throws IOException {
 		context.req1 = context.req1.pathParam("userId", context.userID) // Add ISBN as query parameter
 				.spec(requestSpecification());
-	}
 
-	/*
-	 * @When("user call get request for {string} endpoint with {string} http request"
-	 * ) public void user_call_get_request_for_endpoint_with_http_request(String
-	 * resource, String method) { API_Resources resources =
-	 * API_Resources.valueOf(resource);
-	 * 
-	 * if (method.equalsIgnoreCase("get")) { context.response =
-	 * context.req1.when().get(resources.getResource()).then().log().all()
-	 * .extract().response(); } else if (method.equalsIgnoreCase("getBooks")) {
-	 * context.response =
-	 * context.req1.when().get(resources.getResource()).then().log().all().extract()
-	 * .response(); } else if (method.equalsIgnoreCase("getBookByIsbn")) {
-	 * context.response =
-	 * context.req1.when().get(resources.getResource()).then().log().all()
-	 * .extract().response(); } }
-	 */
+	}
 
 	@Then("verify the response body")
 	public void verify_the_response_body() {
@@ -89,8 +70,7 @@ public class GetRequest_steps extends specBuilder {
 	@Then("verify the book by isbn value")
 	public void verify_the_book_by_isbn_value() {
 		context.response.then().assertThat().body("isbn", Matchers.equalTo(context.firstISBN));
+		context.response.then().assertThat().body(CommonUtils.validateAgainstSchema("getBookByISBN.json"));
 	}
 
 }
-
-

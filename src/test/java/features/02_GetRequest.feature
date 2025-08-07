@@ -15,7 +15,7 @@ Then verify the response body
 @getBooks @test
 Scenario: check if user able to get all book details
 
-When user call "getBooks" endpoint with "getBooks" http request
+When user call "getBooks" endpoint with "get" http request
 Then user should get 200 status code,"HTTP/1.1 200 OK" status line and "application/json; charset=utf-8" content-type
 Then verify the book details in response body
 

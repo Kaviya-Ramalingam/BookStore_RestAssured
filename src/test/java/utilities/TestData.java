@@ -2,54 +2,58 @@ package utilities;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import pojo.AddBookForUserPojo;
+import pojo.CollectionOfIsbnPojo;
+import pojo.CreateUserPojo;
+import pojo.DeleteBookPojo;
+import pojo.UpdateUserWithAnotherIsbn;
+
 public class TestData {
-	
-	static ExcelUtility excel = new ExcelUtility(System.getProperty("user.dir")+"//src//test//java//resources//BookStore_API.xlsx") ;
-	
-	public Map<String, String> userDataPayload(String testcaseName,String sheetName) throws IOException {
-		//Random randomNum = new Random();
-	
-	Map<String ,String >userData = new HashMap<>();
-	List<String> excelData = excel.getData(testcaseName, sheetName);
-	userData.put("userName", excelData.get(1));
-	userData.put("password", excelData.get(2));
-	return userData;
+
+	static ExcelUtility excel = new ExcelUtility(
+			System.getProperty("user.dir") + "//src//test//java//resources//BookStore_API.xlsx");
+
+	public CreateUserPojo getUserData(String testcaseName, String sheetName) throws IOException {
+		List<String> excelData = excel.getData(testcaseName, sheetName);
+
+		CreateUserPojo user = new CreateUserPojo();
+		user.setUserName(excelData.get(1));
+		user.setPassword(excelData.get(2));
+		return user;
+
 	}
 
-	
-	public Map<String, Object> createBook(String userID,String firstISBN){
-		Map<String,Object >postBook = new HashMap<>();//create map for request body
-		postBook.put("userId",userID);//add userid to it
-		Map<String,String>isbnMap = new HashMap<>();//create a map for isbn
-		isbnMap.put("isbn", firstISBN);
-		
-		postBook.put("collectionOfIsbns",new Map[]{isbnMap});//add the single isbn map to collectionOfIsbns list
-		return postBook;
-		
+	public AddBookForUserPojo getBookData(String userID, String firstISBN) {
+		AddBookForUserPojo book = new AddBookForUserPojo();
+		book.setUserId(userID);
+		CollectionOfIsbnPojo isbn = new CollectionOfIsbnPojo();
+		isbn.setIsbn(firstISBN);
+		book.setCollectionOfIsbns(Collections.singletonList(isbn));
+		return book;
+
 	}
-	
-	public Map<String,String>deleteBook(String firstISBN,String userId){
-		Map<String, String>deleteBookData = new HashMap<>();
-		deleteBookData.put("isbn", firstISBN);
-		deleteBookData.put("userId", userId);
-		
-		return deleteBookData;
-		
+
+	public UpdateUserWithAnotherIsbn updatebook(String userId, String isbn) {
+		UpdateUserWithAnotherIsbn updateBook = new UpdateUserWithAnotherIsbn();
+		updateBook.setIsbn(isbn);
+		updateBook.setUserId(userId);
+		return updateBook;
+
 	}
-	
-	public Map<String ,String>updateBookbyIsbn(String userId,String isbn){
-		Map<String,String>updateBookData=new HashMap<>();
-		updateBookData.put("userId", userId);
-		updateBookData.put("isbn", isbn);
-		
-		return updateBookData;
-		
+
+	public DeleteBookPojo deleteBook(String ISBN, String userId) {
+
+		DeleteBookPojo deleteBook = new DeleteBookPojo();
+		deleteBook.setUserId(userId);
+		deleteBook.setIsbn(ISBN);
+		return deleteBook;
+
 	}
-	
-	
+
 }

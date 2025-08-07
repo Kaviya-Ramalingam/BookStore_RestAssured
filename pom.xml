@@ -66,11 +66,13 @@
     <version>2.2.14</version>
 </dependency>
 
-<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
+
+
+<!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
 <dependency>
-    <groupId>io.cucumber</groupId>
-    <artifactId>cucumber-picocontainer</artifactId>
-    <version>7.21.1</version>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <version>5.5.1</version>
 </dependency>
   </dependencies>
 </project>
